@@ -1,6 +1,7 @@
+#ifndef _locks_h
+#define _locks_h
 
 #include "random.h"
-
 
 struct PerThread {
 	static int num_threads;
@@ -88,3 +89,5 @@ void __fastcall LCS_fair_profile ( LightCS *, int dummy_parameter, char *name );
 void __fastcall LCS_test ( LightCS *, int dummy_parameter, char *name );
 
 void set_active_LCS ( LCS lcs );*/
+
+#endif // _locks_h

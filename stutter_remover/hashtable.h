@@ -1,3 +1,5 @@
+#ifndef _hashtable_h
+#define _hashtable_h
 
 struct Hashtable;
 
@@ -16,3 +18,5 @@ void set_hashint    ( int (__fastcall *) ( Hashtable *, int, UInt32 ) );
 void set_hashstring ( int (__fastcall *) ( Hashtable *, int, const char * ) );
 
 void initialize_hashtable_hooks();
+
+#endif // _hashtable_h

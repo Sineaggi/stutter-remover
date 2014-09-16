@@ -1,3 +1,6 @@
+#ifndef _settings_h
+#define _settings_h
+
 #ifndef DECLARE_SETTING_I
 #	define TEMP_DECLARATIONS
 #	define DECLARE_SETTING_SECTION(section)
@@ -123,7 +126,6 @@ DECLARE_SETTING_B(Hashtables,bEnableMessages,  0, "")//0
 DECLARE_SETTING_B(Hashtables,bEnableExtraMessages,0, "")//0
 DECLARE_SETTING_B(Hashtables,bEnableProfiling, 0, "")//0
 
-
 #ifdef TEMP_DECLARATIONS
 #	undef TEMP_DECLARATIONS
 #	undef DECLARE_SETTING_SECTION
@@ -132,3 +134,5 @@ DECLARE_SETTING_B(Hashtables,bEnableProfiling, 0, "")//0
 #	undef DECLARE_SETTING_F
 #	undef DECLARE_SETTING_B
 #endif
+
+#endif // _settings_h

@@ -1,3 +1,5 @@
+#ifndef _memory_h
+#define _memory_h
 
 struct SR_HEAP {
 	void* ( * malloc)         ( size_t size );
@@ -24,3 +26,5 @@ bool optimize_memoryheap(int mode, bool do_profiling);
 void *allocate_from_memoryheap ( size_t size );
 void  free_to_memoryheap       ( void *ptr   );
 void *realloc_from_memoryheap  ( void *ptr, size_t size );
+
+#endif // _memory_h

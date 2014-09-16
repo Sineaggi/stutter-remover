@@ -1,3 +1,6 @@
+#ifndef _main_h
+#define _main_h
+
 #define USE_SCRIPT_EXTENDER
 #ifndef USE_SCRIPT_EXTENDER
 	#define FORCE_INITIALIZATION
@@ -409,10 +412,9 @@ void register_thread_destruction_callback(void (*)());
 	extern UInt32 Hook_MainGameFunction       ;//specific to NV for the moment
 	extern UInt32 Hook_MainGameFunctionCaller ;//specific to NV for the moment
 
-
 #	define COMPONENT_DLL_PATH "Data\\nvse\\plugins\\ComponentDLLs\\"
 #else
 #	error Unrecognized version of Oblivion / Fallout / New Vegas
 #endif
 
-
+#endif // _main_h

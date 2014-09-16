@@ -1,3 +1,6 @@
+#ifndef _simpleheap_h
+#define _simpleheap_h
+
 namespace SimpleHeap1 {
 	void *allocate(size_t size);
 	void deallocate(void *mem);
@@ -42,3 +45,5 @@ namespace ThreadHeap3 {
 	void init();
 	size_t get_bytes_used();
 }
+
+#endif // _simpleheap_h

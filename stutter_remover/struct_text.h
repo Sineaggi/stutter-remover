@@ -106,4 +106,4 @@ public:
 };
 
 
-#endif//_struct_text_h
+#endif // _struct_text_h

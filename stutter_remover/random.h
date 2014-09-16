@@ -1,3 +1,6 @@
+#ifndef _random_h
+#define _random_h
+
 class RNG_fast32_16 {
 /*
 	To be used in a drop-in binary replacement for a libc rand() on 32-bit x86 that returns 15 bits per call.  
@@ -40,3 +43,5 @@ public:
 extern RNG_jsf32 global_rng;
 
 void initialize_random_hooks();
+
+#endif // _random_h
