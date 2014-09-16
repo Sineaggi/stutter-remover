@@ -29,6 +29,7 @@
 	#include "obse_common/SafeWrite.h"
 #elif defined FALLOUT
 	#define WIN32_LEAN_AND_MEAN
+	#include "fose_common\fose_version.h"
 	#include "common/iPrefix.h"
 	#include "fose/PluginAPI.h"
 	#include "fose/CommandTable.h"
@@ -211,7 +212,7 @@ void register_thread_destruction_callback(void (*)());
 
 #	define COMPONENT_DLL_PATH "Data\\obse\\plugins\\ComponentDLLs\\"
 
-#elif defined FALLOUT && (FALLOUT_VERSION == 0x01070030) //FALLOUT_VERSION_1_7_30
+#elif defined FALLOUT && (FALLOUT_VERSION == FALLOUT_VERSION_1_7) //FALLOUT_VERSION_1_7_30
 	static const UInt64 Hook_target = SR_MAKE_VERSION( 1, 1, 7, 0, 3);
 	static const char *Hook_target_s = "Fallout3 1.2.0.416";
 
