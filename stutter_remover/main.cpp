@@ -855,11 +855,11 @@ bool initialize2() {//called at startup / OBSE load
 	char buffy[8192];
 	std::time_t current_time = std::time(NULL);
 	// FIXME
-	std::tm *local_tm = NULL;
-	localtime_s(local_tm, &current_time);
+	std::tm local_tm;
+	localtime_s(&local_tm, &current_time);
 	// FIXME
 	char asctime_buffy[512];
-	asctime_s(asctime_buffy, 512, local_tm);
+	asctime_s(asctime_buffy, 512, &local_tm);
 	sprintf_s(buffy, 8192, "initialize2() running in thread %x at %s", GetCurrentThreadId(), asctime_buffy);
 	g_log.Message(buffy);
 
