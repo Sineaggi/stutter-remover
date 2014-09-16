@@ -270,7 +270,8 @@ void show_memory_perf() {
 	static UInt64 memory_ops = 0;
 	static UInt32 init_time_ms = 0;
 	static UInt64 init_time_ticks = 0;
-	UInt32 tmp1, tmp2, tmp3;
+	UInt32 tmp1, tmp2;
+	//UInt32 tmp1, tmp2, tmp3;
 	do {tmp1 = partial_memory_time; } while (::InterlockedCompareExchange(&partial_memory_time , 0, tmp1) != tmp1);
 	do {tmp2 = partial_memory_ops;  } while (::InterlockedCompareExchange(&partial_memory_ops  , 0, tmp2) != tmp2);
 //	do {tmp3 = partial_memory_time2;} while (::InterlockedCompareExchange(&partial_memory_time2, 0, tmp3) != tmp3);
@@ -627,7 +628,7 @@ void hook_heap_profiling() {
 	addr = Hook_Memory_Dtor;      if (addr) WriteRelJump( addr, UInt32(replaced_MemoryDtor) );
 }
 static bool is_in_heap_wrap(void *mem) {
-	return bool(heap.get_size(mem));
+	return heap.get_size(mem) != 0;
 }
 bool load_external_heap(const char *dll_name, const char *malloc_name, const char *free_name, const char *realloc_name, const char *msize_name, const char *is_in_heap_name) {
 	char buffy[4096];
