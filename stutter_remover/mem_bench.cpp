@@ -547,10 +547,12 @@ void benchmark_heap(SR_HEAP *heap) {
 		double rate = MILLISECONDS * 0.001 / double(operations) * pow(10.0, 9.0);
 		char buffy[512];
 		char *ptr = &buffy[0];
-		int len = sprintf(ptr, "%s", bs.name);
+		// FIXME
+		int len = sprintf_s(ptr, 512, "%s", bs.name);
 		ptr += len;
 		for (int n = 20-len; n >= 0; n--) *(ptr++) = ' ';
-		ptr += sprintf(ptr, "%.1f ns/op", rate);
+		// FIXME
+		ptr += sprintf_s(ptr, 512, "%.1f ns/op", rate);
 		Sleep(10);
 		message("%s", buffy);
 //		if (heap->get_bytes_used) message("total bytes used: %d", heap->get_bytes_used());

@@ -511,9 +511,11 @@ namespace PerfData3 {//per-thread, little locking needed
 				char buffy[512];
 				int p = 0;
 				for (std::vector<const void*>::iterator it = pcs.callers2.begin(); it != pcs.callers2.end(); it++)  {
-					p += sprintf(&buffy[p], "%8X ", (int)*it);
+					// FIXME
+					p += sprintf_s(&buffy[p], 512, "%8X ", (int)*it);
 					if (p >= 30) {
-						p += sprintf(&buffy[p], "...");
+						// FIXME
+						p += sprintf_s(&buffy[p], 512, "...");
 						break;
 					}
 				}

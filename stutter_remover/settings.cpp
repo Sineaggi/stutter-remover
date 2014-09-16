@@ -289,11 +289,13 @@ static bool get_ini_path ( char *buffer, int bufsize ) {
 	char *slash = strrchr(buffer, '\\');
 	if (!slash) return false;
 	slash[1] = 0;
-	strcat(buffer, RELATIVE_INI_FILE_PATH);
+	// FIXME
+	strcat_s(buffer, bufsize, RELATIVE_INI_FILE_PATH);
 	if (!PathFileExistsA(buffer)) {
 		return false;
 	}
-	strcat(buffer, INI_FILE_NAME);
+	// FIXME
+	strcat_s(buffer, bufsize, INI_FILE_NAME);
 	return true;
 }
 

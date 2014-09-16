@@ -238,18 +238,22 @@ STATIC_ASSERT(offsetof(MemoryPool, field_118) == 0x118);
 }*/
 bool get_component_dll_path ( char *buffer, int bufsize, const char *fname ) {
 	if (!GetModuleFileName(GetModuleHandle(NULL), &buffer[0], bufsize - 64)) {
-		strcpy(buffer, fname);
+		// FIXME
+		strcpy_s(buffer, bufsize, fname);
 		return false;
 	}
 	char *slash = strrchr(buffer, '\\');
 	if (!slash) return false;
 	slash[1] = 0;
-	strcat(buffer, COMPONENT_DLL_PATH);
+	// FIXME
+	strcat_s(buffer, bufsize, COMPONENT_DLL_PATH);
 	if (!PathFileExistsA(buffer)) {
-		strcat(buffer, fname);
+		// FIXME
+		strcat_s(buffer, bufsize, fname);
 		return false;
 	}
-	strcat(buffer, fname);
+	// FIXME
+	strcat_s(buffer, bufsize, fname);
 	return true;
 }
 

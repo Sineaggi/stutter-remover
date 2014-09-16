@@ -262,7 +262,8 @@ namespace HT_Perf1 {
 				if (!d.destructor) continue;
 				char buffy[800];
 				char *p = buffy;
-				p += sprintf(p, "   %9d%9.0f  (%4.1f)    %6d/%6d     ms:0x%08X  addr:0x%08X  vt:0x%08X", 
+				// FIXME
+				p += sprintf_s(p, 800, "   %9d%9.0f  (%4.1f)    %6d/%6d     ms:0x%08X  addr:0x%08X  vt:0x%08X", 
 					d.accesses, double(d.wastage>>4), double(d.wastage)/d.accesses / 16.0, d.peak, d.size, d.memsetter, d.address, d.old_vtable
 				);
 				message(buffy);
@@ -285,11 +286,13 @@ namespace HT_Perf1 {
 				DeletedHashtableData &d = *it2->second;
 				char buffy[800];
 				char *p = buffy;
-				p += sprintf(p, "   %9d%9.0f  (%4.1f)  %6d/%6d ms:0x%08X  %6d (%4.1f)", 
+				// FIXME
+				p += sprintf_s(p, 800, "   %9d%9.0f  (%4.1f)  %6d/%6d ms:0x%08X  %6d (%4.1f)", 
 					d.accesses, double(d.wastage>>4), double(d.wastage)/d.accesses/16, d.peak, d.size, d.memsetter, d.death_count, 
 					d.size * d.death_count * 0.5 / (d.wastage / 16.0 +  d.accesses)
 				);
-				for (std::set<UInt32>::iterator it = d.vtables.begin(); it != d.vtables.end(); it++) if (*it) p += sprintf(p, " vt:0x%08x", *it);
+				// FIXME
+				for (std::set<UInt32>::iterator it = d.vtables.begin(); it != d.vtables.end(); it++) if (*it) p += sprintf_s(p, 800, " vt:0x%08x", *it);
 				message(buffy);
 			}
 		}

@@ -17,7 +17,9 @@ static bool is_white_space(char c) {return c == ' ' || c == '\t';}
 
 TextSection *TextSection::load_file(const char *filename) {
 	std::vector<char> file_contents;
-	FILE *file = fopen(filename, "rt");
+	// FIXME
+	FILE *file = NULL;
+	fopen_s(&file, filename, "rt");
 	if (!file) {
 		printf("TextSection::load_file: error opening file \"%s\"\n", filename);
 		return NULL;
@@ -50,7 +52,9 @@ TextSection *TextSection::load_file(const char *filename) {
 	return r;
 }
 bool TextSection::save_file(const char *filename) {
-	FILE *file = fopen(filename, "wt");
+	// FIXME
+	FILE *file = NULL;
+	fopen_s(&file, filename, "wt");
 	if (!file) {
 		message("TextSection::save_file: error opening file \"%s\"\n", filename);
 		return false;
@@ -179,7 +183,8 @@ int TextSection::_parse_value ( const char *baseptr, int max_length, int max_lev
 				enum {EXCERPT_LENGTH = 64};
 				char buffy[EXCERPT_LENGTH];
 				int ml = (max_length < EXCERPT_LENGTH-1) ? max_length : EXCERPT_LENGTH-1;
-				strncpy(buffy, baseptr, ml);
+				// FIXME
+				strncpy_s(buffy, max_length, baseptr, ml);
 				buffy[ml] = 0;
 //				error("TextSection: parse failed\n(%s)", buffy);
 				error("TextSection: parse failed\n(%s)\n", buffy);
@@ -319,12 +324,14 @@ void TextSection::set_text  ( const char *text ) {
 }
 void TextSection::set_int   ( int value ) {
 	char buffy[4096];
-	sprintf(buffy, " %d", value);
+	// FIXME
+	sprintf_s(buffy, 4096, " %d", value);
 	set_text(buffy);
 }
 void TextSection::set_float ( double value ) {
 	char buffy[4096];
-	sprintf(buffy, " %f", value);
+	// FIXME
+	sprintf_s(buffy, 4096, " %f", value);
 	set_text(buffy);
 }
 TextSection *TextSection::add_section ( std::string name ) {

@@ -384,7 +384,8 @@ void message(const char *format, ...) {
 
 	va_list those_dots;
 	va_start(those_dots, format);
-	_vsnprintf(buffy, 4000, format, those_dots);
+	// FIXME
+	_vsnprintf_s(buffy, 4096, 4000, format, those_dots);
 	//vsprintf(error_string, format, those_dots);
 	va_end(those_dots);
 
@@ -400,7 +401,8 @@ std::string make_string( const char *format, ... ) {
 
 	va_list those_dots;
 	va_start(those_dots, format);
-	_vsnprintf(buffy, 8190, format, those_dots);
+	// FIXME
+	_vsnprintf_s(buffy, 8192, 8190, format, those_dots);
 	//vsprintf(error_string, format, those_dots);
 	va_end(those_dots);
 
@@ -411,7 +413,8 @@ void error( const char *format, ... ) {
 
 	va_list those_dots;
 	va_start(those_dots, format);
-	_vsnprintf(buffy, 4000, format, those_dots);
+	// FIXME
+	_vsnprintf_s(buffy, 4096, 4000, format, those_dots);
 	//vsprintf(error_string, format, those_dots);
 	va_end(those_dots);
 
@@ -425,7 +428,8 @@ void message_console(const char *format, ...) {
 
 	va_list those_dots;
 	va_start(those_dots, format);
-	_vsnprintf(buffy, 4000, format, those_dots);
+	// FIXME
+	_vsnprintf_s(buffy, 4096, 4000, format, those_dots);
 	//vsprintf(error_string, format, those_dots);
 	va_end(those_dots);
 
@@ -436,7 +440,8 @@ void message_log(const char *format, ...) {
 
 	va_list those_dots;
 	va_start(those_dots, format);
-	_vsnprintf(buffy, 4000, format, those_dots);
+	// FIXME
+	_vsnprintf_s(buffy, 4096, 4000, format, those_dots);
 	//vsprintf(error_string, format, those_dots);
 	va_end(those_dots);
 
@@ -815,7 +820,8 @@ void initialize_main_hook() {
 bool initialize0() {//called at startup / OBSE query
 	g_log.SetAutoFlush(true);
 	char buffy[512];
-	sprintf(buffy, "initialize0() running in thread %x", GetCurrentThreadId());
+	// FIXME
+	sprintf_s(buffy, 512, "initialize0() running in thread %x", GetCurrentThreadId());
 	g_log.Message(buffy);
 	init_time();
 	global_rng.seed_64(base_time_ticks);
@@ -838,7 +844,8 @@ bool initialize0() {//called at startup / OBSE query
 }
 bool initialize1() {//called at startup / OBSE query
 	char buffy[800];
-	sprintf(buffy, "initialize1() running in thread %x", GetCurrentThreadId());
+	// FIXME
+	sprintf_s(buffy, 800, "initialize1() running in thread %x", GetCurrentThreadId());
 	g_log.Message(buffy);
 
 	load_settings();
@@ -847,8 +854,13 @@ bool initialize1() {//called at startup / OBSE query
 bool initialize2() {//called at startup / OBSE load
 	char buffy[8192];
 	std::time_t current_time = std::time(NULL);
-	std::tm *local_tm = localtime(&current_time);
-	sprintf(buffy, "initialize2() running in thread %x at %s", GetCurrentThreadId(), std::asctime(local_tm));
+	// FIXME
+	std::tm *local_tm = NULL;
+	localtime_s(local_tm, &current_time);
+	// FIXME
+	char asctime_buffy[512];
+	asctime_s(asctime_buffy, 512, local_tm);
+	sprintf_s(buffy, 8192, "initialize2() running in thread %x at %s", GetCurrentThreadId(), asctime_buffy);
 	g_log.Message(buffy);
 
 	if (Settings::Master::bReplaceGetTickCount) hook_GetTickCount();
