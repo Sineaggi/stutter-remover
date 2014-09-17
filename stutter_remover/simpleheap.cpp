@@ -136,7 +136,7 @@ namespace SimpleHeap1 {
 		Node *ptr = free_list[si];
 		if (ptr) {
 			while (1) {//return result from freelist, fast
-				if (ptr == NULL) {
+				if (ptr == nullptr) {
 #ifdef DEBUG_SIMPLEHEAP
 					message("free-list was emptied beneath us");
 #endif
@@ -149,7 +149,7 @@ namespace SimpleHeap1 {
 #endif
 					if (si < num_sizes - 1) si++;
 					ptr = free_list[si];
-					if (smart_bypass) if (ptr == NULL || ptr == FROZEN_NODE) return ::malloc(sizes[si]);
+					if (smart_bypass) if (ptr == nullptr || ptr == FROZEN_NODE) return ::malloc(sizes[si]);
 //					MemoryBarrier();
 					continue;
 				}
@@ -219,7 +219,7 @@ namespace SimpleHeap1 {
 				message("SimpleHeap1 - exhausted all blocks");
 			}
 			int base_addr = int(superblock) + subblock_size * sbi;
-			Node *last = NULL;
+			Node *last = nullptr;
 			Node *first = (Node*) (base_addr + sizes[si]);
 			for (int i = sizes[si]; i <= subblock_size - sizes[si]; i += sizes[si]) {
 #ifdef DEBUG_SIMPLEHEAP
@@ -355,7 +355,7 @@ namespace SimpleHeap1 {
 		if (!Settings::Master::bExperimentalStuff || !Settings::Experimental::iHeapMainBlockAddress) {
 			//enum {ALIGN_SUPERBLOCK=4096};
 			//superblock = (char*)((int(malloc(total_subblocks * subblock_size + ALIGN_SUPERBLOCK))+ALIGN_SUPERBLOCK-1)&(0xFFffFFfful - (ALIGN_SUPERBLOCK-1)));
-			superblock = (char*)VirtualAlloc(NULL, total_subblocks * subblock_size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
+			superblock = (char*)VirtualAlloc(nullptr, total_subblocks * subblock_size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
 		}
 		else {
 			superblock = (char*)::VirtualAlloc((void*)Settings::Experimental::iHeapMainBlockAddress, total_subblocks * subblock_size, MEM_COMMIT|MEM_RESERVE, PAGE_READWRITE);
@@ -365,7 +365,7 @@ namespace SimpleHeap1 {
 		subblock_lookup = (char*)malloc(total_subblocks);
 		if (!subblock_lookup) error("SimpleHeap1::init() - failed to allocate subblock_lookup");
 		for (int i = 0; i < total_subblocks; i++) subblock_lookup[i] = -1;
-		for (int i = 0; i < num_sizes; i++) free_list[i] = NULL;
+		for (int i = 0; i < num_sizes; i++) free_list[i] = nullptr;
 		for (int i = 0; i < num_sizes; i++) if (sizes[i] % size_unit) {
 			error("SimpleHeap1::init() - invalid size %d, terminating", sizes[i]);
 		}
@@ -415,9 +415,9 @@ namespace ThreadHeap1 {
 		//a single list + a circular buffer should be better
 		PerThread() {
 			for (int i = 0; i < num_sizes; i++) {
-				free_list[i] = NULL;
+				free_list[i] = nullptr;
 				free_list_count[i] = 0;
-				free_list2[i] = NULL;
+				free_list2[i] = nullptr;
 				free_list2_count[i] = 0;
 			}
 		}
@@ -469,7 +469,7 @@ namespace ThreadHeap1 {
 			::LeaveCriticalSection(&cs);
 		}
 		//all per-thread lists are empty, fallback to non-thread-aware system ; buffer several, hopefully that will be faster
-/*		rv = NULL;
+/*		rv = nullptr;
 		for (int i = 0; i < bunch_size[si]; i++) {
 			Node *n = (Node*)BaseHeap::_allocate(si);
 			n->next = rv;
@@ -533,7 +533,7 @@ namespace ThreadHeap1 {
 		::InitializeCriticalSectionAndSpinCount(&cs, 2500);
 		for (int i = 0; i < num_sizes; i++) {
 			bunch_size[i] = 1 + ((BUNCH_SIZE-1) / BaseHeap::sizes[i]);
-			free_bunch_list[i] = NULL;
+			free_bunch_list[i] = nullptr;
 		}
 	}
 };
@@ -571,10 +571,10 @@ namespace SimpleHeap2 {
 		int num_blocks;
 	public:
 		void init() {
-			head = NULL;
+			head = nullptr;
 			num_blocks = 0;
 		}
-//		bool _is_empty() const {return head == NULL;}
+//		bool _is_empty() const {return head == nullptr;}
 		Node *pop() {
 			::EnterCriticalSection(&cs);
 			Node *rv = head;
@@ -605,7 +605,7 @@ namespace SimpleHeap2 {
 			::InitializeCriticalSectionAndSpinCount(&cs, 99999);
 			num_blocks = 0;
 		}
-//		bool _is_empty() const {return head == NULL;}
+//		bool _is_empty() const {return head == nullptr;}
 		Node *pop() {
 			::EnterCriticalSection(&cs);
 			Node *rv = head;
@@ -644,7 +644,7 @@ namespace SimpleHeap2 {
 		void init() {
 			for (int i = 0; i < WAYS; i++) {
 				::InitializeCriticalSectionAndSpinCount(&ways[i].cs, 99999);
-				ways[i].head = NULL;
+				ways[i].head = nullptr;
 			}
 			num_blocks = 0;
 			push_switcher = 0;
@@ -900,12 +900,12 @@ namespace ThreadHeap2 {
 	volatile char *block_to_si_lookup; //block-index to size-index
 	char * allocate_block(int si) {
 		if (used_blocks == total_blocks) {
-			return NULL;
+			return nullptr;
 		}
 		int block = ::InterlockedIncrement(&used_blocks) - 1;
 		if (block >= total_blocks) {
 			used_blocks = total_blocks;
-			return NULL;
+			return nullptr;
 		}
 		if (block == total_blocks -1) {
 			message("ThreadHeap2 - exhausted all blocks");
@@ -962,7 +962,7 @@ namespace ThreadHeap2 {
 		Bunch *head;
 		BunchList() {
 			::InitializeCriticalSectionAndSpinCount(&cs, 4000);
-			head = NULL;
+			head = nullptr;
 		}
 		void push ( Node * node ) {
 			::EnterCriticalSection(&cs);
@@ -984,7 +984,7 @@ namespace ThreadHeap2 {
 	struct BunchList2 {
 		Bunch *volatile head;
 		BunchList2() {
-			head = NULL;
+			head = nullptr;
 		}
 		void push ( Node * node_ ) {
 			Bunch *node = (Bunch*)node_;
@@ -1011,7 +1011,7 @@ namespace ThreadHeap2 {
 //					{message("ThreadHeap2::BunchList2::pop() - failed to lock, retrying");continue;}
 					continue;
 				Bunch *next2;
-				next2 = next ? next->next_bunch : NULL;
+				next2 = next ? next->next_bunch : nullptr;
 				prefetch_node(next2);
 #if 1
 				head = next2;//unlocks the list
@@ -1050,11 +1050,11 @@ namespace ThreadHeap2 {
 			PerSize() {
 				buffer_head = 0;
 				num_buffered = 0;
-				partial_bunch = NULL;
+				partial_bunch = nullptr;
 				partial_bunch_size = 0;
-				partial_block = NULL;
-				partial_block_end = NULL;
-//				for (int i = 0; i < BUFFER_SIZE; i++) buffer[i] = NULL;
+				partial_block = nullptr;
+				partial_block_end = nullptr;
+//				for (int i = 0; i < BUFFER_SIZE; i++) buffer[i] = nullptr;
 			}
 		};
 		PerSize per_size[num_sizes];
@@ -1087,7 +1087,7 @@ namespace ThreadHeap2 {
 			if (ps.partial_block) {
 				rv = (Node*)ps.partial_block;
 				ps.partial_block += sizes[si];
-				if (ps.partial_block > ps.partial_block_end) ps.partial_block = NULL;
+				if (ps.partial_block > ps.partial_block_end) ps.partial_block = nullptr;
 				else prefetch_node(ps.partial_block);
 //				message("ThreadHeap2 - popping from partial-block (si:%d)", si);
 				return rv;
@@ -1138,8 +1138,8 @@ namespace ThreadHeap2 {
 					if (ps.partial_bunch_size == bunch_size[si]) {
 						free_bunch_list[si].push(ps.partial_bunch);
 						ps.partial_bunch_size = 0;
-						ps.partial_bunch = NULL;
-						ps.buffer[(ps.buffer_head+0) & MASK]->next = NULL; 
+						ps.partial_bunch = nullptr;
+						ps.buffer[(ps.buffer_head+0) & MASK]->next = nullptr; 
 //						message("ThreadHeap2 - push spilled a bunch to shared-bunch-list");
 					}
 					ps.partial_bunch = ps.buffer[ps.buffer_head];
@@ -1243,7 +1243,7 @@ namespace ThreadHeap2 {
 			//superblock = (char*)malloc(total_blocks * block_size + ALIGN_SUPERBLOCK);
 			//superblock = (char*)((int(malloc(total_subblocks * subblock_size + ALIGN_SUPERBLOCK))+ALIGN_SUPERBLOCK-1)&(0xFFffFFfful - (ALIGN_SUPERBLOCK-1)));
 			//superblock = (char*)((int(superblock)+ALIGN_SUPERBLOCK-1)&(0xFFffFFfful - (ALIGN_SUPERBLOCK-1)));
-			superblock = (char*)VirtualAlloc(NULL, total_blocks * block_size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
+			superblock = (char*)VirtualAlloc(nullptr, total_blocks * block_size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
 		}
 		else {
 			superblock = (char*)::VirtualAlloc((void*)Settings::Experimental::iHeapMainBlockAddress, total_blocks * block_size, MEM_COMMIT|MEM_RESERVE, PAGE_READWRITE);
@@ -1396,7 +1396,7 @@ namespace ThreadHeap3 {
 		int num_nodes;
 		Node *free_list;
 		int stats_bunches_popped;
-		void clear() {num_nodes = 0; free_list = NULL;}
+		void clear() {num_nodes = 0; free_list = nullptr;}
 		Spill() {
 			InitializeCriticalSectionAndSpinCount(&cs, 4000);
 			clear();
@@ -1409,7 +1409,7 @@ namespace ThreadHeap3 {
 		Spill &spill = spills[si];
 		EnterCriticalSection(&spill.cs);
 		if (Settings::Heap::bEnableMessages) message("ThreadHeap3::push_spill si=%d, num=%d+%d, bunches=%d+%d", si, num, spill.num_nodes, bunches_popped, spill.stats_bunches_popped);
-		Bunch *rv = NULL;
+		Bunch *rv = nullptr;
 		int thresh = 1 << bunch_count_shift[si];
 		for (int i = 0; i < num; i++) {
 			Node *tmp = list;
@@ -1435,7 +1435,7 @@ namespace ThreadHeap3 {
 			if (!rv) continue;
 			char *next = rv + size;
 			//!!!!!!!!!
-			if (!is_same_block((int)rv, (int)next)) next = NULL;
+			if (!is_same_block((int)rv, (int)next)) next = nullptr;
 			char *actual = (char*)::InterlockedCompareExchangePointer(&partial_blocks[si], next, rv);
 			if (actual != rv) continue;
 			if (next) return (Node*)rv;
@@ -1467,7 +1467,7 @@ namespace ThreadHeap3 {
 			unsigned long before = partial_blocks[si];
 			if (before & 1) {
 				if (before == PARTIAL_BLOCK_FROZEN) continue;
-				if (before == PARTIAL_BLOCK_EXHAUSTED) return NULL;
+				if (before == PARTIAL_BLOCK_EXHAUSTED) return nullptr;
 				error("ThreadHeap3::allocate_from_partial_block - impossible");
 			}
 			unsigned long after = before + size;
@@ -1490,7 +1490,7 @@ namespace ThreadHeap3 {
 				partial_blocks[si] = PARTIAL_BLOCK_EXHAUSTED;
 				if (leftovers == size) return (Bunch*)&superblock[before];//one last bunch from the old block
 				push_spillage(si, (Node*)&superblock[before], spills, 0);
-				return NULL;
+				return nullptr;
 			}
 			else {
 				new_block <<= block_size_shift;
@@ -1513,7 +1513,7 @@ namespace ThreadHeap3 {
 		char _padding[64-sizeof(CRITICAL_SECTION) - sizeof(Bunch*)];
 		BunchList() {
 			InitializeCriticalSectionAndSpinCount(&cs, 12000);
-			head = NULL;
+			head = nullptr;
 		}
 		void push ( Bunch * node ) {
 			EnterCriticalSection(&cs);
@@ -1533,16 +1533,16 @@ namespace ThreadHeap3 {
 		}
 	};
 	struct BunchList2 {
-		enum {NULL2 = 0x00000001};//reserved pointer value
+		enum {nullptr2 = 0x00000001};//reserved pointer value
 		Bunch *volatile head;
 		char _padding[64-sizeof(Bunch*)];
 		BunchList2() {
-			head = NULL;
+			head = nullptr;
 		}
 		void push ( Bunch * bunch ) {
 			while (1) {
 				Bunch *next = head;
-				if (next == ((void*)NULL2)) continue;
+				if (next == ((void*)nullptr2)) continue;
 				bunch->next_bunch = next;
 				if (::InterlockedCompareExchangePointer( (void**)&head, bunch, next ) == next) break;
 				//else message("ThreadHeap3::BunchList2::push() - failed to push, retrying");
@@ -1551,9 +1551,9 @@ namespace ThreadHeap3 {
 		Bunch *pop ( ) {
 			while (1) {
 				Bunch *rv = head;
-				if (rv == NULL) return NULL;
-				if (rv == ((void*)NULL2)) continue;
-				if (::InterlockedCompareExchangePointer( (void**)&head, ((void*)NULL2), rv ) != rv)//locks the list
+				if (rv == nullptr) return nullptr;
+				if (rv == ((void*)nullptr2)) continue;
+				if (::InterlockedCompareExchangePointer( (void**)&head, ((void*)nullptr2), rv ) != rv)//locks the list
 					continue;
 				Bunch *next = rv->next_bunch;
 				prefetch_node(next);
@@ -1575,7 +1575,7 @@ namespace ThreadHeap3 {
 		Bunch *rv = bunch_list.pop();
 		if (rv) return rv;
 		rv = allocate_from_partial_block(si, bunch_size[si]);
-		if (!rv) return NULL;//bunch_list.pop();
+		if (!rv) return nullptr;//bunch_list.pop();
 		return rv;
 	}
 	inline void bunch_push(int si, Bunch *bunch) {
@@ -1593,8 +1593,8 @@ namespace ThreadHeap3 {
 
 			PerSize() {
 				nodes_left = 0;
-				free_list = NULL;
-				//for (int i = 0; i < NUM_MARKERS; i++) markers[i] = NULL;//unnecessary
+				free_list = nullptr;
+				//for (int i = 0; i < NUM_MARKERS; i++) markers[i] = nullptr;//unnecessary
 				stats_bunches_popped = 0;
 			}
 		};
@@ -1711,7 +1711,7 @@ namespace ThreadHeap3 {
 		if (!mem) return allocate(size);
 		if (!size) {
 			deallocate(mem);
-			return NULL;
+			return nullptr;
 		}
 		unsigned int offset = int(mem) - int(superblock);
 		unsigned int block = offset >> block_size_shift;
@@ -1787,7 +1787,7 @@ namespace ThreadHeap3 {
 			//superblock = (char*)malloc(total_blocks * block_size + ALIGN_SUPERBLOCK);
 			//superblock = (char*)((int(malloc(total_subblocks * subblock_size + ALIGN_SUPERBLOCK))+ALIGN_SUPERBLOCK-1)&(0xFFffFFfful - (ALIGN_SUPERBLOCK-1)));
 			//superblock = (char*)((int(superblock)+ALIGN_SUPERBLOCK-1)&(0xFFffFFfful - (ALIGN_SUPERBLOCK-1)));
-			superblock = (char*)VirtualAlloc(NULL, total_blocks * block_size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
+			superblock = (char*)VirtualAlloc(nullptr, total_blocks * block_size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
 		}
 		else {
 			superblock = (char*)::VirtualAlloc((void*)Settings::Experimental::iHeapMainBlockAddress, total_blocks * block_size, MEM_COMMIT|MEM_RESERVE, PAGE_READWRITE);

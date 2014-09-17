@@ -84,7 +84,7 @@ namespace HT_Perf1 {
 	}
 	static UInt32 get_memsetter(void *memory) {
 		volatile PerMemset &pm = memset_callers[memset_address_hash(memory) & (MEMSET_CALLER_TABLE_SIZE-1)];
-		if (pm.memory != memory) return NULL;
+		if (pm.memory != memory) return 0;
 		return pm.caller;
 	}
 
@@ -130,7 +130,7 @@ namespace HT_Perf1 {
 				if (!dhtd.size) dhtd.size = fv->size;
 				dhtd.death_count++;
 				dhtd.vtables.insert(UInt32(fv->old_vtable));
-				fv->destructor = NULL;
+				fv->destructor = nullptr;
 			}
 			::LeaveCriticalSection(&htcs);
 			return odtor;
@@ -150,7 +150,7 @@ namespace HT_Perf1 {
 		}
 	}
 	volatile bool HashtableFakeVTable::allocate(Hashtable *ht) {
-		if (InterlockedCompareExchangePointer(&destructor, &fake_destructor, NULL)) {
+		if (InterlockedCompareExchangePointer(&destructor, &fake_destructor, nullptr)) {
 			return false;
 		}
 		void **rvt = ht->vtable;
@@ -175,13 +175,13 @@ namespace HT_Perf1 {
 			if (!dtor) continue;
 			Hashtable *ht = (Hashtable*)d.address;
 			if (ht->vtable == &d.destructor) continue;
-			if (HashtableFakeVTable::destruction_helper(NULL, &d) != NULL)
+			if (HashtableFakeVTable::destruction_helper(nullptr, &d) != 0)
 				slain_undead++;
 		}
 		LeaveCriticalSection(&htcs);
 		return slain_undead;
 	}
-	HashtableFakeVTable *hashtable_marked_vtable_space = NULL;
+	HashtableFakeVTable *hashtable_marked_vtable_space = nullptr;
 
 
 	UInt32 last_print_time;
@@ -574,7 +574,7 @@ void initialize_hashtable_hooks() {
 #endif
 				Hashtable *ht = *(Hashtable **)a;
 				if (!ht) {
-					message("HashtableEarlyIndirect override ignored - pointer is NULL (%x)", a);
+					message("HashtableEarlyIndirect override ignored - pointer is nullptr (%x)", a);
 					continue;
 				}
 				UInt32 actual_old = ht->m_numBuckets;

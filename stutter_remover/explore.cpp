@@ -41,7 +41,7 @@
 		std::pair<UInt32,const char *>(0xA81A64, "NiBSPNode"),
 		std::pair<UInt32,const char *>(0xA904B4, "ShadowSceneNode"),
 	//#endif
-		std::pair<UInt32,const char *>(0x0, NULL)
+		std::pair<UInt32,const char *>(0x0, nullptr)
 	};
 	std::pair<UInt32, const char *> _nonnode_avobject_vtables[] = {
 	//#ifdef OBLIVION
@@ -71,7 +71,7 @@
 		std::pair<UInt32,const char *>(0xA8183C, "NiParticleMeshes"),
 	//	std::pair<UInt32,const char *>(0x, ""),
 	//#endif
-		std::pair<UInt32,const char *>(0x0, NULL)
+		std::pair<UInt32,const char *>(0x0, nullptr)
 	};
 	std::map<UInt32, const char *> node_vtables;
 	std::map<UInt32, const char *> nonnode_avobject_vtables;
@@ -118,13 +118,13 @@
 		if (indentation > MAX_INDENT_LEVEL) return;
 		memset(buffy, ' ', indentation * INDENT_LEVEL_SPACES);
 		buffy[indentation * INDENT_LEVEL_SPACES] = 0;
-		if (node == NULL) {
+		if (node == nullptr) {
 			message("%sNULL", buffy);
 			return;
 		}
 		std::map<UInt32, const char *>::iterator it;
 		it = node_vtables.find(node->vtable);
-		const char *name = NULL;
+		const char *name = nullptr;
 		bool is_node = false;
 		if (it != node_vtables.end()) {
 			name = it->second;
@@ -185,7 +185,7 @@
 			double p = get_tick_period();
 			std::map<UInt32, const char *>::iterator it;
 			it = node_vtables.find(_self->vtable);
-			const char *name = NULL;
+			const char *name = nullptr;
 			bool is_node = false;
 			if (it != node_vtables.end()) {
 				name = it->second;
@@ -230,7 +230,7 @@
 			UInt32 return_address;
 			UInt32 wrapper_address;
 			void reset() {
-				name = NULL;
+				name = nullptr;
 				flags = 0;
 				callee_address = 0;
 				caller_address = 0;
@@ -495,7 +495,7 @@
 				DO64SLOTS(448)
 			}
 			error("CallPerf::get_call_wrapper - should be unreachable %d", slot);
-			return NULL;
+			return nullptr;
 		}
 		void hook_relative_call(UInt32 instruction_address, const char *name) {
 			UInt32 old_rel_target = *(UInt32*)(instruction_address+1);
@@ -540,10 +540,10 @@
 		}
 		int custom_hook ( const char *name = "" ) {
 			int slot = allocate_slot();
-			slots[slot].caller_address = NULL;
-			slots[slot].callee_address = NULL;
-			slots[slot].return_address = NULL;
-			slots[slot].wrapper_address = NULL;
+			slots[slot].caller_address = nullptr;
+			slots[slot].callee_address = nullptr;
+			slots[slot].return_address = nullptr;
+			slots[slot].wrapper_address = nullptr;
 			slots[slot].flags = 0;
 			slots[slot].name = name;
 			return slot;
@@ -563,13 +563,13 @@
 	//	if (p_bssa_v14_level) message("profile_entering_bsshaderaccumulator_0x14 - already %d", p_bssa_v14_level);
 	//	else p_bssa_v14_time = timeGetTime();
 	//	p_bssa_v14_level++;
-	//	CallPerf::do_event_call(NULL, p_bssa_slot);
+	//	CallPerf::do_event_call(nullptr, p_bssa_slot);
 	//}
 	//void __fastcall profile_exiting_bsshaderaccumulator_0x14(int who) {
 	//	p_bssa_v14_level--;
 	//	if (p_bssa_v14_level) message("profile_entering_bsshaderaccumulator_0x14 - still %d", p_bssa_v14_level);
 	//	else message("bsshaderaccumulator_0x14 took %d milliseconds (%d)", timeGetTime() - p_bssa_v14_time, who);
-	//	CallPerf::do_event_return(NULL, p_bssa_slot);
+	//	CallPerf::do_event_return(nullptr, p_bssa_slot);
 	//}
 	int cp_slot_0x7ae070;
 	void __declspec(naked) _profile_entering_0x7ae070() {

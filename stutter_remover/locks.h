@@ -29,9 +29,9 @@ struct PerThread {
 //-------------------------------
 	static void initialize() ;
 	PerThread() {
-		cs_perfdata3_buffer = NULL;
+		cs_perfdata3_buffer = nullptr;
 		cs_switch = 0;
-		//delayed_free_pt = NULL;
+		//delayed_free_pt = nullptr;
 		internal_rng.seed_64(global_rng.raw64());
 		internal_rng_hq.seed_64(global_rng.raw64());
 		oblivion_rng.seed_64(global_rng.raw64());

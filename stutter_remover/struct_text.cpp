@@ -18,11 +18,11 @@ static bool is_white_space(char c) {return c == ' ' || c == '\t';}
 TextSection *TextSection::load_file(const char *filename) {
 	std::vector<char> file_contents;
 	// FIXME
-	FILE *file = NULL;
+	FILE *file = nullptr;
 	fopen_s(&file, filename, "rt");
 	if (!file) {
 		printf("TextSection::load_file: error opening file \"%s\"\n", filename);
-		return NULL;
+		return nullptr;
 	}
 	file_contents.push_back('{');
 	int size = 1;
@@ -32,7 +32,7 @@ TextSection *TextSection::load_file(const char *filename) {
 		if (r < 0) {
 			printf("TextSection::load_file: error reading file \"%s\"\n", filename);
 			fclose(file);
-			return NULL;
+			return nullptr;
 		}
 		size += r;
 		if (r < max - size - 2) break;
@@ -40,20 +40,20 @@ TextSection *TextSection::load_file(const char *filename) {
 	file_contents[size++] = '}';
 	file_contents[size++] = '\n';
 	fclose(file);//file fully loaded;
-	TextSection *r = NULL;
+	TextSection *r = nullptr;
 	r = new TextSection();
 	try {
 		r->_parse(&file_contents[0], size, 31);
 	}
 	catch (const _my_exception *e) {
 		delete r;
-		return NULL;
+		return nullptr;
 	}
 	return r;
 }
 bool TextSection::save_file(const char *filename) {
 	// FIXME
-	FILE *file = NULL;
+	FILE *file = nullptr;
 	fopen_s(&file, filename, "wt");
 	if (!file) {
 		message("TextSection::save_file: error opening file \"%s\"\n", filename);
@@ -117,7 +117,7 @@ int strcspn(const char *str, const CharSet &cs, int length) {
 	return length;
 }
 #define MAKE_CHARSET(name, const_str, length) \
-	static const CharSet * name = NULL; \
+	static const CharSet * name = nullptr; \
 	if (1) {static bool done = false; if (!done) {name = new CharSet(const_str, length);}}
 
 int TextSection::_parse_section ( const char *baseptr, int max_length, int max_level ) {
@@ -221,26 +221,26 @@ void TextSection::init_copy ( const TextSection &old ) {
 		child->init_copy(*it->second);
 	}
 }
-TextSection::TextSection( const TextSection &old ) : flags(0), parent(NULL) {
+TextSection::TextSection( const TextSection &old ) : flags(0), parent(nullptr) {
 	init_copy(old);
 }
-TextSection::TextSection( ) : flags(0), parent(NULL) {}
+TextSection::TextSection( ) : flags(0), parent(nullptr) {}
 TextSection::TextSection( const char *raw_text, int length ) 
 : 
 	flags(0), 
-	parent(NULL)
+	parent(nullptr)
 {
 	_parse(raw_text, length, 32);
 }
 void TextSection::_tree_kill ( ) {
-	parent = NULL;
+	parent = nullptr;
 	delete this;
 }
 TextSection::~TextSection ( ) {
 	if (parent) {
 		parent->children_list.erase(self_in_list);
 		parent->children_set.erase(self_in_set);
-//		parent = NULL;
+//		parent = nullptr;
 	}
 	std::list<TextSection*>::iterator it;
 	for (it = children_list.begin(); it != children_list.end(); it++) {
@@ -254,22 +254,22 @@ double TextSection::get_float() const {
 
 int TextSection::get_int() const {
 	const char *cstr = trimmed_value.c_str();
-	int i = strtol(cstr, NULL, 0);
+	int i = strtol(cstr, nullptr, 0);
 	return i;
 }
 UInt32 TextSection::get_uint() const {
 	const char *cstr = trimmed_value.c_str();
-	UInt32 i = strtoul(cstr, NULL, 0);
+	UInt32 i = strtoul(cstr, nullptr, 0);
 	return i;
 }
 SInt64 TextSection::get_int64() const {
 	const char *cstr = trimmed_value.c_str();
-	SInt64 i = _strtoi64(cstr, NULL, 0);
+	SInt64 i = _strtoi64(cstr, nullptr, 0);
 	return i;
 }
 UInt64 TextSection::get_uint64() const {
 	const char *cstr = trimmed_value.c_str();
-	UInt64 i = _strtoui64(cstr, NULL, 0);
+	UInt64 i = _strtoui64(cstr, nullptr, 0);
 	return i;
 }
 const char *TextSection::get_c_string() const {
@@ -283,13 +283,13 @@ const std::string &TextSection::get_raw_string() const {
 }
 const TextSection *TextSection::get_section(std::string name) const {
 	ChildrenSetType::const_iterator it = children_set.find(name);
-	if (it == children_set.end()) return NULL;
+	if (it == children_set.end()) return nullptr;
 	else return it->second;
 }
 TextSection *TextSection::get_section(std::string name) {
-	if (!this) return NULL;//brutal hack
+	if (!this) return nullptr;//brutal hack
  	ChildrenSetType::iterator it = children_set.find(name);
-	if (it == children_set.end()) return NULL;
+	if (it == children_set.end()) return nullptr;
 	else return it->second;
 }
 TextSection *TextSection::get_or_add_section(std::string name) {
@@ -352,23 +352,23 @@ const std::string &TextSection::get_name() const {
 	else return self_in_set->first;
 }
 const TextSection *TextSection::get_first_section() const {
-	if (children_list.empty()) return NULL;
+	if (children_list.empty()) return nullptr;
 	else return *children_list.begin();
 }
 const TextSection *TextSection::get_last_section() const {
-	if (children_list.empty()) return NULL;
+	if (children_list.empty()) return nullptr;
 	else return *children_list.rbegin();
 }
 const TextSection *TextSection::get_next_section() const {
-	if (!parent) return NULL;
+	if (!parent) return nullptr;
 	std::list<TextSection*>::iterator it = self_in_list;
-	if (++it == parent->children_list.end()) return NULL;
+	if (++it == parent->children_list.end()) return nullptr;
 	else return *it;
 }
 const TextSection *TextSection::get_prev_section() const {
-	if (!parent) return NULL;
+	if (!parent) return nullptr;
 	std::list<TextSection*>::iterator it = self_in_list;
-	if (--it == parent->children_list.end()) return NULL;
+	if (--it == parent->children_list.end()) return nullptr;
 	else return *it;
 }
 
@@ -426,7 +426,7 @@ static void _lua_table_to_structured_text ( lua_State *state, TextSection *ts ) 
 	lua_pushnil(state);
 	while (lua_next(state, -2) != 0) {
 		//table, key, value
-		const char *lp=NULL, *rp=NULL;
+		const char *lp=nullptr, *rp=nullptr;
 		char buffy_left[512];
 		char buffy_right[512];
 		switch (lua_type(state, -2)) {
@@ -461,7 +461,7 @@ static void _lua_table_to_structured_text ( lua_State *state, TextSection *ts ) 
 	}
 }
 static TextSection *lua_table_to_structured_text ( lua_State *state ) {
-	if (lua_type(state, -1) != LUA_TTABLE) return NULL;
+	if (lua_type(state, -1) != LUA_TTABLE) return nullptr;
 	TextSection *ts = new TextSection();
 	_lua_table_to_structured_text(state, ts);
 	return ts;

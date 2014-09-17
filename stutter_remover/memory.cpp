@@ -30,10 +30,10 @@ SR_HEAP heap_SimpleHeap1 = {
 	SimpleHeap1::is_in_heap_fast,
 	SimpleHeap1::is_in_heap,
 	SimpleHeap1::init,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
 };
 SR_HEAP heap_ThreadHeap2 = {
 	ThreadHeap2::allocate,
@@ -41,12 +41,12 @@ SR_HEAP heap_ThreadHeap2 = {
 	ThreadHeap2::reallocate,
 	ThreadHeap2::get_size,
 	ThreadHeap2::is_in_heap_fast,
-	NULL,//ThreadHeap2::is_in_heap,
+	nullptr,//ThreadHeap2::is_in_heap,
 	ThreadHeap2::init,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
 };
 SR_HEAP heap_ThreadHeap3 = {
 	ThreadHeap3::allocate,
@@ -54,38 +54,38 @@ SR_HEAP heap_ThreadHeap3 = {
 	ThreadHeap3::reallocate,
 	ThreadHeap3::get_size,
 	ThreadHeap3::is_in_heap_fast,
-	NULL,//ThreadHeap3::is_in_heap,
+	nullptr,//ThreadHeap3::is_in_heap,
 	ThreadHeap3::init,
 	ThreadHeap3::get_bytes_used,
-	NULL,
-	NULL,
-	NULL,
+	nullptr,
+	nullptr,
+	nullptr,
 };
 SR_HEAP heap_Windows = {
 	malloc,
 	free,
 	realloc,
 	_msize,
-	NULL,//is_in_heap_fast,
-	NULL,//is_in_heap,
-	NULL,//init,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
+	nullptr,//is_in_heap_fast,
+	nullptr,//is_in_heap,
+	nullptr,//init,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
 };
 SR_HEAP heap_Oblivion = {
 	allocate_from_memoryheap,
 	free_to_memoryheap,
 	realloc_from_memoryheap,
-	NULL,//get_size
-	NULL,//is_in_heap_fast
-	NULL,//is_in_heap,
-	NULL,//init
-	NULL,
-	NULL,
-	NULL,
-	NULL,
+	nullptr,//get_size
+	nullptr,//is_in_heap_fast
+	nullptr,//is_in_heap,
+	nullptr,//init
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
 };
 SR_HEAP heap = heap_Oblivion;
 
@@ -237,7 +237,7 @@ STATIC_ASSERT(offsetof(MemoryPool, field_118) == 0x118);
 	}
 }*/
 bool get_component_dll_path ( char *buffer, int bufsize, const char *fname ) {
-	if (!GetModuleFileName(GetModuleHandle(NULL), &buffer[0], bufsize - 64)) {
+	if (!GetModuleFileName(GetModuleHandle(nullptr), &buffer[0], bufsize - 64)) {
 		// FIXME
 		strcpy_s(buffer, bufsize, fname);
 		return false;
@@ -378,7 +378,7 @@ void *__fastcall replaced_Reallocate( MemoryHeap *obheap, int nothing, void *mem
 	if (size <= 0 || !mem) {
 		if (Settings::Heap::bEnableMessages) message("Reallocating 0x%X to %d bytes", mem, size);
 	}
-	if (!size) {if (mem) heap.free(mem); return NULL;}
+	if (!size) {if (mem) heap.free(mem); return nullptr;}
 	else if (!mem) return heap.malloc(size);
 	else return heap.realloc(mem, size);
 }
@@ -448,7 +448,7 @@ void *__fastcall replaced_Reallocate_profiling( MemoryHeap *obheap, int nothing,
 	STARTTIME
 //	message("Reallocate (%X, %d)", mem, size);
 	void *rv;//rv = heap.realloc(mem, size);
-	if (!size) {rv = NULL; if (mem) heap.free(mem);}
+	if (!size) {rv = nullptr; if (mem) heap.free(mem);}
 	else if (!mem) rv = heap.malloc(size);
 	else rv = heap.realloc(mem, size);
 	if (size <= 0 || !mem) {
@@ -632,7 +632,7 @@ static bool is_in_heap_wrap(void *mem) {
 }
 bool load_external_heap(const char *dll_name, const char *malloc_name, const char *free_name, const char *realloc_name, const char *msize_name, const char *is_in_heap_name) {
 	char buffy[4096];
-	HMODULE hm = NULL;
+	HMODULE hm = nullptr;
 	if (!get_component_dll_path(&buffy[0], 4000, dll_name)) {
 		message("Failed to find %s", buffy);
 		return false;
@@ -660,11 +660,11 @@ bool optimize_memoryheap(int mode, bool do_profiling) {
 	heap.free = free;
 	heap.realloc = realloc;
 	heap.get_size = _msize;
-	heap.is_in_heap_fast = NULL;
-	heap.is_in_heap = NULL;
-	heap.CreatePool = NULL;
-	heap.FreePages = NULL;
-	heap.MemStats = NULL;
+	heap.is_in_heap_fast = nullptr;
+	heap.is_in_heap = nullptr;
+	heap.CreatePool = nullptr;
+	heap.FreePages = nullptr;
+	heap.MemStats = nullptr;
 	bool hook_needed = false;
 	if (mode == 0) {
 		message("Heap Replacement using algorithm #0: Not optimizing MemoryHeap");
@@ -728,7 +728,7 @@ bool optimize_memoryheap(int mode, bool do_profiling) {
 		else hook_needed = true;
 		/*if (true) {
 			char buffy[4096];
-			HMODULE hm = NULL;
+			HMODULE hm = nullptr;
 			//"C:\\Program Files\\Oblivion\\Data\\obse\\plugins\\ComponentDLLs\\BorlndMM.dll"
 			//if (!get_component_dll_path(&buffy[0], 4000, "debugMM.dll")) {
 			if (!get_component_dll_path(&buffy[0], 4000, "BorlndMM.dll")) {
@@ -766,7 +766,7 @@ bool optimize_memoryheap(int mode, bool do_profiling) {
 		message("Heap Replacement using algorithm #9: attempting to replace the Oblivion heap manager with nedmalloc");
 		if (true) {
 			char buffy[4096];
-			HMODULE hm = NULL;
+			HMODULE hm = nullptr;
 			if (!get_component_dll_path(&buffy[0], 4000, "nedmalloc.dll")) {
 				message("Failed to find %s", buffy);
 				return false;
@@ -815,12 +815,12 @@ bool optimize_memoryheap(int mode, bool do_profiling) {
 		message("freed some");
 		std::vector<void*> ptrs;
 		ptrs.resize(16183);
-		for (int i = 0; i < ptrs.size(); i++) ptrs[i] = NULL;
+		for (int i = 0; i < ptrs.size(); i++) ptrs[i] = nullptr;
 		for (int i = 0; i < 10000; i++) ptrs[rand() % ptrs.size()] = heap.malloc(12);
 		message("allocated a bunch");
 		for (int i = 0; i < 1000000; i++) {
 			int index = rand() % ptrs.size();
-			if (ptrs[index] == NULL) {
+			if (ptrs[index] == nullptr) {
 				ptrs[index] = heap.malloc(12);
 			}
 			else if (!(rand() % 3)) {
@@ -828,7 +828,7 @@ bool optimize_memoryheap(int mode, bool do_profiling) {
 			}
 			else {
 				heap.free(ptrs[index]);
-				ptrs[index] = NULL;
+				ptrs[index] = nullptr;
 			}
 //			if (!(i&0)) message("%d", i);
 		}

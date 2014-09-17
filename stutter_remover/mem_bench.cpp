@@ -35,7 +35,7 @@ namespace MemoryBenchmarkStuff {
 		Set *pop() {
 			int i = index_out;
 			int next = (i+1) & (FIFO_SIZE-1);
-			if (next == index_in) return NULL;
+			if (next == index_in) return nullptr;
 			Set *rv = data[next];
 			MemoryBarrier();
 			index_out = next;
@@ -94,7 +94,7 @@ namespace MemoryBenchmarkStuff {
 		enum {BUFF_SIZE=1<<12};
 		int units = 0;
 		void *buff[BUFF_SIZE];
-		for (int i = 0; i < BUFF_SIZE; i++) buff[i] = NULL;
+		for (int i = 0; i < BUFF_SIZE; i++) buff[i] = nullptr;
 		do {
 			for (int i = 0; i < BUFF_SIZE/32; i++) {
 				int size = 8 + (rng.raw32() & MEMBENCH_SIZE_MASK);
@@ -126,7 +126,7 @@ namespace MemoryBenchmarkStuff {
 		RNG_fast32_16 rng;
 		rng.seed_64( tp->seed );
 		int units = 0;
-		Set *set = NULL;
+		Set *set = nullptr;
 		Set *in;
 		do {
 			if (!set) {
@@ -140,7 +140,7 @@ namespace MemoryBenchmarkStuff {
 				units++;
 			}
 			if (tp->output && tp->output->push(set)) {
-				set = NULL;
+				set = nullptr;
 			}
 			if (tp->input && (in=tp->input->pop())) {
 				use_set(in);
@@ -169,7 +169,7 @@ namespace MemoryBenchmarkStuff {
 		enum {BUFF_SIZE=1<<10};
 		int units = 0;
 		void *buff[BUFF_SIZE];
-		for (int i = 0; i < BUFF_SIZE; i++) buff[i] = NULL;
+		for (int i = 0; i < BUFF_SIZE; i++) buff[i] = nullptr;
 		do {
 			for (int i = 0; i < BUFF_SIZE/16; i++) {
 				int size = 8 + (rng.raw32() & MEMBENCH_SIZE_MASK);
@@ -193,7 +193,7 @@ namespace MemoryBenchmarkStuff {
 		while (rng.raw32() & 1);
 		for (int i = 0; i < BUFF_SIZE; i++) heap.free(buff[i]);
 		if (SInt32(tp->end_time - timeGetTime()) > 0) {
-			if (!CreateThread( NULL, 1<<15, &benchmark_heap_thread_chained, param, 0, NULL))
+			if (!CreateThread( nullptr, 1<<15, &benchmark_heap_thread_chained, param, 0, nullptr))
 				error("benchmark_heap_thread_chained - failed to start next thread");
 		}
 		else {
@@ -225,7 +225,7 @@ namespace MemoryBenchmarkStuff {
 			Set *pop() {
 				int i = index_out;
 				int next = (i+1) & (FIFO_SIZE-1);
-				if (next == index_in) return NULL;
+				if (next == index_in) return nullptr;
 				Set *rv = data[next];
 				MemoryBarrier();
 				index_out = next;
@@ -261,7 +261,7 @@ namespace MemoryBenchmarkStuff {
 				int next = (i+1) & (FIFO_SIZE-1);
 				if (next == index_push) {
 					LeaveCriticalSection(&cs);
-					return NULL;
+					return nullptr;
 				}
 				Set *rv = data[next];
 				MemoryBarrier();
@@ -302,7 +302,7 @@ namespace MemoryBenchmarkStuff {
 			int work_units = work_units_per_thread;
 			RNG_jsf32 rng_hq; rng_hq.seed_64(seeds[ti]);
 			RNG_fast32_16 rng_fast; rng_fast.seed_64(rng_hq.raw64());
-			Set *set = NULL;
+			Set *set = nullptr;
 			while (work_units) {
 				switch (0) {//rng_fast.raw16() & 0) {
 					case 0:
@@ -318,7 +318,7 @@ namespace MemoryBenchmarkStuff {
 						for (int i = 0; i < num_threads; i++) {
 							if (++oti >= num_threads) oti = 0;
 							if (thread_pairs[MAX_THREADS*oti + ti].push(set)) {
-								set = NULL;
+								set = nullptr;
 								break;
 							}
 						}
@@ -362,7 +362,7 @@ namespace MemoryBenchmarkStuff {
 			MemoryBarrier();
 			UInt64 start_time = get_time_ticks();
 			for (int i = 0; i < num_threads; i++) {
-				::HANDLE h = ::CreateThread( NULL, 65536, &_do_per_thread_work, &tp[i], 0, NULL);
+				::HANDLE h = ::CreateThread( nullptr, 65536, &_do_per_thread_work, &tp[i], 0, nullptr);
 				if (!h) error("failed to create thread");
 			}
 			int ms_slept = 0;
@@ -401,10 +401,10 @@ namespace MemoryBenchmarkStuff {
 	tp1.end_time = tp2.end_time = timeGetTime() + milliseconds;
 	tp1.results = tp2.results = 0;
 	tp1.input = tp2.output = &fifo;
-	tp1.output = tp2.input = NULL;
-	if (!CreateThread( NULL, 65536, &benchmark_heap_thread_directional, &tp1, 0, NULL))
+	tp1.output = tp2.input = nullptr;
+	if (!CreateThread( nullptr, 65536, &benchmark_heap_thread_directional, &tp1, 0, nullptr))
 		error("failed to create thread");
-	if (!CreateThread( NULL, 65536, &benchmark_heap_thread_directional, &tp2, 0, NULL))
+	if (!CreateThread( nullptr, 65536, &benchmark_heap_thread_directional, &tp2, 0, nullptr))
 		error("failed to create thread");
 	Sleep(milliseconds);
 	while (true) {
@@ -437,8 +437,8 @@ double benchmark_heap(SR_HEAP *heap, int mode, int threads, int milliseconds) {
 			if (threads & 1) error("MEMORY_BENCHMARK_UNIDIRECTIONAL with odd thread count");
 			fifos.resize(threads>>1);
 			for (int i = 0; i < threads; i++) {
-				tp[i].input = (i & 1) ? &fifos[i>>1] : NULL;
-				tp[i].output = (i & 1) ? NULL : &fifos[i>>1];
+				tp[i].input = (i & 1) ? &fifos[i>>1] : nullptr;
+				tp[i].output = (i & 1) ? nullptr : &fifos[i>>1];
 			}
 		}
 		else if (mode == MEMORY_BENCHMARK_BIDIRECTIONAL) {
@@ -451,13 +451,13 @@ double benchmark_heap(SR_HEAP *heap, int mode, int threads, int milliseconds) {
 		}
 		for (int i = 0; i < threads; i++) {
 			if (mode == MEMORY_BENCHMARK_SIMPLE) 
-				handles[i] = CreateThread( NULL, 1<<14, &benchmark_heap_thread_simple, &tp[i], 0, NULL);
+				handles[i] = CreateThread( nullptr, 1<<14, &benchmark_heap_thread_simple, &tp[i], 0, nullptr);
 			else if (mode == MEMORY_BENCHMARK_ISOLATED) 
-				handles[i] = CreateThread( NULL, 1<<16, &benchmark_heap_thread_isolated, &tp[i], 0, NULL);
+				handles[i] = CreateThread( nullptr, 1<<16, &benchmark_heap_thread_isolated, &tp[i], 0, nullptr);
 			else if (mode == MEMORY_BENCHMARK_UNIDIRECTIONAL || mode == MEMORY_BENCHMARK_BIDIRECTIONAL) 
-				handles[i] = CreateThread( NULL, 1<<15, &benchmark_heap_thread_directional, &tp[i], 0, NULL);
+				handles[i] = CreateThread( nullptr, 1<<15, &benchmark_heap_thread_directional, &tp[i], 0, nullptr);
 			else if (mode == MEMORY_BENCHMARK_CHAINED) {
-				handles[i] = CreateThread( NULL, 1<<15, &benchmark_heap_thread_chained, &tp[i], 0, NULL);
+				handles[i] = CreateThread( nullptr, 1<<15, &benchmark_heap_thread_chained, &tp[i], 0, nullptr);
 			}
 			if (!handles[i]) error("failed to create thread");
 		}
@@ -535,7 +535,7 @@ void benchmark_heap(SR_HEAP *heap) {
 		{"bidir. 4-thread", MEMORY_BENCHMARK_BIDIRECTIONAL, 4},
 		{"bidir. 8-thread", MEMORY_BENCHMARK_BIDIRECTIONAL, 8},
 		{"bidir. 16-thread", MEMORY_BENCHMARK_BIDIRECTIONAL, 16},//*/
-		{NULL, -1, 0},
+		{nullptr, -1, 0},
 	};
 	message("benchmarking heap (%X %X)", heap, &heap_ThreadHeap3);
 	message("times are for all threads combined, in nanoseconds, on a per malloc-or-free basis");

@@ -64,7 +64,7 @@
 		#include "obse/ParamInfos.h"
 		#include "obse_common/SafeWrite.h"
 		#include "obse_common/SafeWrite.cpp"//it's not linked in with the common stuff anymore for some reason
-		OBSEConsoleInterface *g_con = NULL;
+		OBSEConsoleInterface *g_con = nullptr;
 		const _Console_Print Console_Print = (_Console_Print)0x00579B9B;
 	#elif defined FALLOUT
 		//#include "GameForms.h"
@@ -76,7 +76,7 @@
 		#include "fose/ParamInfos.h"
 		#include "fose_common/SafeWrite.h"
 		#include "fose_common/SafeWrite.cpp"//it's not linked in with the common stuff anymore for some reason
-		FOSEConsoleInterface *g_con = NULL;
+		FOSEConsoleInterface *g_con = nullptr;
 		namespace Settings {namespace Master {const bool bLogToConsole = false;}}
 		void Console_Print(const char * fmt, ...)
 		{
@@ -109,7 +109,7 @@
 		const _GetSingleton ConsoleManager_GetSingleton = (_GetSingleton)0x0071B160;
 		ConsoleManager * ConsoleManager::GetSingleton(void)
 		{
-			if (Hook_target != SR_MAKE_VERSION(2, 1, 4, 0, 525)) return NULL;
+			if (Hook_target != SR_MAKE_VERSION(2, 1, 4, 0, 525)) return nullptr;
 			return (ConsoleManager *)ConsoleManager_GetSingleton(true);
 		}
 		void Console_Print(const char * fmt, ...)
@@ -126,7 +126,7 @@
 				va_end(args);
 			}
 		}
-		NVSEConsoleInterface *g_con = NULL;
+		NVSEConsoleInterface *g_con = nullptr;
 	#else
 		#error Oblivion or Fallout?
 	#endif
@@ -136,7 +136,7 @@
 	class DummyConsoleInterface {
 	public:
 		void RunScriptLine(const char *) {}
-	} *g_con = NULL;
+	} *g_con = nullptr;
 	class DummyDebugLog {
 		FILE *f;
 		bool autoflush;
@@ -312,11 +312,11 @@ public:
 static HandleTimeResolution HandleTimeResolution_instance;
 static bool ConsoleReady() {
 #ifdef OBLIVION
-	return (*(void**)0xB3A6FC) != NULL;
+	return (*(void**)0xB3A6FC) != nullptr;
 #elif defined FALLOUT
-	return ConsoleManager_GetSingleton(false) != NULL;
+	return ConsoleManager_GetSingleton(false) != nullptr;
 #elif defined NEW_VEGAS
-	return ConsoleManager_GetSingleton(false) != NULL;
+	return ConsoleManager_GetSingleton(false) != nullptr;
 #endif
 }
 static bool isGameMode() {
@@ -347,7 +347,7 @@ static int GetMenuMode() {
 void FastExit(void)
 {
 #if defined NEW_VEGAS
-	if (g_con) g_con->RunScriptLine("con_SaveINI", NULL);
+	if (g_con) g_con->RunScriptLine("con_SaveINI", nullptr);
 #else
 	if (g_con) g_con->RunScriptLine("con_SaveINI");
 #endif
@@ -492,7 +492,7 @@ UInt32 hash_murmur2(const void * key, unsigned int len)
 }
 static UInt32 get_exe_hash(const char * fname)
 {
-	HANDLE h = CreateFile(fname, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE h = CreateFile(fname, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if(h == INVALID_HANDLE_VALUE) {
 		error("Couldn't find %s, make sure you're running this from the same folder as the executable.", fname);
 	}
@@ -503,7 +503,7 @@ static UInt32 get_exe_hash(const char * fname)
 
 	std::vector<UInt8> buf; buf.resize(length);
 	UInt32 bytes_read;
-	ReadFile(h, &buf[0], DWORD(length), &bytes_read, NULL);
+	ReadFile(h, &buf[0], DWORD(length), &bytes_read, nullptr);
 	if (bytes_read != length) error("failed to read entire file (%d / %d)", bytes_read, UInt32(length));
 
 	// *really* clear 2GB+ address-aware flag
@@ -853,7 +853,7 @@ bool initialize1() {//called at startup / OBSE query
 }
 bool initialize2() {//called at startup / OBSE load
 	char buffy[8192];
-	std::time_t current_time = std::time(NULL);
+	std::time_t current_time = std::time(nullptr);
 	// FIXME
 	std::tm local_tm;
 	localtime_s(&local_tm, &current_time);
