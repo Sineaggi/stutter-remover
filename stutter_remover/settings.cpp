@@ -208,10 +208,10 @@ static bool create_settings(char *path) {
 	HASHTABLE(" 0x00848072",   5039,   12041, 32, "also caller 0x006e213b");
 	HASHTABLE(" 0x00544FA7",     37,      39,  8, "caller 0x00558F0B");
 	HASHTABLE(" 0x00544FC9",     37,	  29,  8, "also caller 0x00558F0B");
-	HASHTABLE(" 0x00AD9169",     37,     111,  8, "address 0x011F6F44, should be caller 0x00AE7BA7, but showing up as nullptr");
-	HASHTABLE(" 0x00AD9189",     37,     111,  8, "address 0x011F6F54, should be caller 0x00AE7C27, but showing up as nullptr");
-	HASHTABLE(" 0x00AD91A9",     37,     111,  8, "address 0x011F6F64, should be caller 0x00AE7C27, but showing up as nullptr");
-	HASHTABLE(" 0x00AD91CC",     37,      39,  8, "address 0x011F6F74, should be caller 0x00AE7CA7, but showing up as nullptr");
+	HASHTABLE(" 0x00AD9169",     37,     111,  8, "address 0x011F6F44, should be caller 0x00AE7BA7, but showing up as NULL");
+	HASHTABLE(" 0x00AD9189",     37,     111,  8, "address 0x011F6F54, should be caller 0x00AE7C27, but showing up as NULL");
+	HASHTABLE(" 0x00AD91A9",     37,     111,  8, "address 0x011F6F64, should be caller 0x00AE7C27, but showing up as NULL");
+	HASHTABLE(" 0x00AD91CC",     37,      39,  8, "address 0x011F6F74, should be caller 0x00AE7CA7, but showing up as NULL");
 	HASHTABLE(" 0x00A2EFDF", 37 * 4, 151 * 4, 32, "caller 0x00a2f00b, multiplied by 4");
 	HASHTABLE(" 0x00A2EFED", 37 * 1, 151 * 1, 32, "caller 0x00a2f00b, must be 1/4th of the preceding one");
 	HASHTABLE(" 0x00A660B7", 59 * 4, 159 * 4, 32, "caller 0x00a660e2, multiplied by 4");

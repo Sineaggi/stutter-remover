@@ -1533,7 +1533,7 @@ namespace ThreadHeap3 {
 		}
 	};
 	struct BunchList2 {
-		enum {nullptr2 = 0x00000001};//reserved pointer value
+		enum {reserved = 0x00000001};//reserved pointer value
 		Bunch *volatile head;
 		char _padding[64-sizeof(Bunch*)];
 		BunchList2() {
@@ -1542,7 +1542,7 @@ namespace ThreadHeap3 {
 		void push ( Bunch * bunch ) {
 			while (1) {
 				Bunch *next = head;
-				if (next == ((void*)nullptr2)) continue;
+				if (next == ((void*)reserved)) continue;
 				bunch->next_bunch = next;
 				if (::InterlockedCompareExchangePointer( (void**)&head, bunch, next ) == next) break;
 				//else message("ThreadHeap3::BunchList2::push() - failed to push, retrying");
@@ -1552,8 +1552,8 @@ namespace ThreadHeap3 {
 			while (1) {
 				Bunch *rv = head;
 				if (rv == nullptr) return nullptr;
-				if (rv == ((void*)nullptr2)) continue;
-				if (::InterlockedCompareExchangePointer( (void**)&head, ((void*)nullptr2), rv ) != rv)//locks the list
+				if (rv == ((void*)reserved)) continue;
+				if (::InterlockedCompareExchangePointer( (void**)&head, ((void*)reserved), rv ) != rv)//locks the list
 					continue;
 				Bunch *next = rv->next_bunch;
 				prefetch_node(next);
