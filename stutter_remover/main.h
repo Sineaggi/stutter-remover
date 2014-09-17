@@ -41,13 +41,14 @@
 	#include "fose_common/SafeWrite.h"
 #elif defined NEW_VEGAS
 	#define WIN32_LEAN_AND_MEAN
+	#include "nvse/nvse_version.h"
 	#include "common/iPrefix.h"
 	#include "nvse/PluginAPI.h"
 	#include "nvse/CommandTable.h"
 	#include "nvse/GameAPI.h"
 	#include "nvse/ParamInfos.h"
 	#include "nvse/SafeWrite.h"
-	#include "nvse/nvse_version.h"
+
 #endif
 
 //settings.cpp
